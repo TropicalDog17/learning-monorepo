@@ -1,0 +1,24 @@
+{
+    "github.copilot.enable": {
+        "*": true,
+        "plaintext": true,
+        "markdown": false,
+        "scminput": false,
+        "rust": true,
+        "zig": false,
+        "typescript": true,
+        "go": true,
+        "shellscript": true,
+        "dockerfile": true,
+        "makefile": true,
+        "code-runner-output": true,
+        "python": true,
+        "toml": true,
+        "solidity": false,
+        "javascript": true,
+        "log": true,
+        "cairo": true,
+        "sql": false,
+        "properties": false
+    }
+}
