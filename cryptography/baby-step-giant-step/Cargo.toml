@@ -1,0 +1,9 @@
+[package]
+name = "baby-step-giant-step"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+ark-ff = "0.5.0"
+ark-secp256k1 = "0.5.0"
+ark-std = { version = "0.5.0", features = ["std", "getrandom"] }
