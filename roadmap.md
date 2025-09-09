@@ -1,10 +1,10 @@
-# Learning Roadmap: Rust Distributed Systems + Zero-Knowledge Proofs (30 hrs/week, 6 months)
+# Learning Roadmap: Rust Distributed Systems + Zero-Knowledge Proofs (30 hrs/week, 12 months)
 
 This roadmap combines the PingCAP Talent Plan and practical zero-knowledge proof (ZK) projects to help you level up to a mid-level Rust developer with deep understanding of distributed systems and zk-SNARK applications.
 
 ## Overview
 
-- Total Time: 6 months
+- Total Time: 12 months
 - Weekly Time: ~30 hours
 - Goal: Build real distributed systems in Rust (Raft + Percolator) and deploy practical ZK applications (Groth16, Circom)
 - Deliverables:
@@ -48,11 +48,10 @@ Rust / Talent Plan
 
 ZK Learning
 
-- [ ] Arithmetic Circuits and Finite Fields
-- [ ] Circom Hello World
-- [ ] Password Verifier
-- [ ] Age Checker
-- [ ] Less Than Comparator
+- [ ] Week 1–2: Noir sprint (syntax, toolchain)
+  - Learn the pipeline: Noir → ACIR → backend
+  - Deploy one proof to a Solidity verifier (testnet)
+  - Concept focus: abstraction layers in DSLs; how ACIR generalizes constraint systems
 
 Go Track (Optional)
 
@@ -74,10 +73,10 @@ Rust / Talent Plan
 
 ZK Learning
 
-- [ ] Circom Templates and Loop Constraints
-- [ ] Number in Range
-- [ ] Sudoku Validator (optional)
-- [ ] Merkle Tree Membership Proof
+- [ ] Halo2 core (Weeks 3–8 of Q1)
+  - Understand regions, advice/fixed columns, custom gates
+  - Polynomial commitments: how they enforce validity
+  - Concept focus: what constraint systems are; why PLONKish protocols scale better than R1CS
 
 Go Track (Optional)
 
@@ -101,10 +100,9 @@ Rust / Talent Plan
 
 ZK Learning
 
-- [ ] Groth16 Concepts and R1CS to QAP
-- [ ] Lagrange Interpolation and Schwartz-Zippel
-- [ ] Vote Validity (ZK Voting)
-- [ ] Tornado-style Mini Mixer
+- [ ] End-to-end DSL application (Weeks 9–12 of Q1)
+  - Build a private voting app
+  - Concept focus: mapping inputs to public vs private signals; witness handling for soundness; how verifier contracts enforce succinctness
 
 Go Track (Optional)
 
@@ -127,10 +125,9 @@ Rust / Talent Plan
 
 ZK Learning
 
-- [ ] Solidity Verifier (snarkjs or circom-verify-template)
-- [ ] ZK ERC-20 Private Transfer (Nullifier and Commitment)
-- [ ] Deploy verifier contract to testnet
-- [ ] Optional: Noir or arkworks proof generator
+- [ ] Circuit optimization (Q2 Month 4)
+  - Benchmark Poseidon vs SHA-256
+  - Concept focus: how constraint count translates to prover complexity; native-friendly primitives
 
 Go Track (Optional)
 
@@ -153,10 +150,9 @@ Rust / Talent Plan
 
 ZK Learning
 
-- [ ] XOR Classifier (ZKML Toy, optional)
-- [ ] Complete Mixer Withdrawal Logic and Nullifier Checks
-- [ ] Integrate Circuit with CLI or Web UI
-- [ ] Start zk-SNARK verifier in Rust (arkworks)
+- [ ] Rollup simulation (Q2 Month 5)
+  - Build a toy rollup
+  - Concept focus: data availability vs validity proofs; Merkle trees as commitments; why rollups depend on ZK for scalability
 
 Go Track (Optional)
 
@@ -177,11 +173,77 @@ Rust / Talent Plan
   - TiDB GitHub: [https://github.com/pingcap/tidb](https://github.com/pingcap/tidb)
   - TiKV GitHub: [https://github.com/tikv/tikv](https://github.com/tikv/tikv)
 
+ZK Learning
+
+- [ ] Benchmarking (Q2 Month 6)
+  - Compare Circom, Noir, Halo2
+  - Concept focus: verification gas vs assumptions (pairings vs FRI); trusted setup vs transparent proofs
+  - Deliverable: short benchmark report and tradeoff summary
+
 ZK Final Projects
 
 - [ ] Finalize CLI or Frontend for one ZK use case
 - [ ] Write blog post or README walkthrough
 - [ ] Polish zk-project repo with test cases and Solidity verifier
+
+## Month 7 – Recursive Proofs
+
+Rust / Systems
+
+- [ ] Consolidate code quality; refactor Raft/Percolator components as needed
+
+ZK Learning
+
+- [ ] Build a small Halo2 recursion demo
+- [ ] Concept focus: how recursion compresses proofs; aggregation vs recursion
+
+## Month 8 – Identity Proofs
+
+Rust / Systems
+
+- [ ] Write tests and docs; open PRs to TiDB/TiKV if possible
+
+ZK Learning
+
+- [ ] Build ZK login and age/region proofs
+- [ ] Concept focus: nullifiers to prevent double-spends; selective disclosure and privacy guarantees
+
+## Month 9 – ZK Integrations
+
+Rust / Systems
+
+- [ ] Performance profiling; fuzzer or property tests for critical components
+
+ZK Learning
+
+- [ ] Prototype a zk light client verifier
+- [ ] Concept focus: why zk bridges need full consensus proofs; fraud proofs vs validity proofs
+
+## Month 10 – Security & Auditing
+
+Rust / Systems
+
+- [ ] Reliability pass: metrics, logging, and failure injection
+
+ZK Learning
+
+- [ ] Audit one of your circuits for under/over-constraint bugs
+- [ ] Concept focus: Fiat–Shamir heuristic and risks
+
+## Month 11 – Protocol Literacy
+
+ZK Learning
+
+- [ ] Read Groth16, PLONK, Halo2, STARKs (conceptual)
+- [ ] Concept focus: SNARK succinctness and trusted setup; STARK transparency and cost; where Halo2 fits
+
+## Month 12 – Capstone
+
+ZK Learning
+
+- [ ] Build mini rollup + recursive proofs
+- [ ] Light zkVM demo (Risc0 SHA-256)
+- [ ] Concept focus: DSLs vs zkVMs and when to use each; future directions (zkML, zk bridges, universal verifiers)
 
 Go Track (Optional)
 
@@ -206,6 +268,8 @@ If you have a full-time job and can't commit to 30 hours/week:
 learning-monorepo/
 ├── rust-projects/
 │ └── kvstore-raft/
+├── zk-learning/
+│ └── README.md
 ├── zk-projects/
 │ ├── password-verifier/
 │ ├── mixer-circom/
@@ -237,3 +301,4 @@ learning-monorepo/
 - Talent Plan: [Rust Track](./talent-plan/courses/rust/README.md)
 - Talent Plan: [Distributed Systems Track](./talent-plan/courses/dss/README.md)
 - Talent Plan: [Go Track](./talent-plan/tidb/README.md) (Optional)
+  - See also: `zk-learning/README.md` for detailed checklists and links
