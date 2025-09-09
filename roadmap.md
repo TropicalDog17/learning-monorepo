@@ -41,7 +41,7 @@ Rust / Talent Plan
   - Reference: [Rust Book Chapters 4, 10, and 15](https://doc.rust-lang.org/book/)
 - [ ] Error Handling and Testing Patterns
   - Checklist: [talent-plan/courses/rust/projects/project-1/README.md](./talent-plan/courses/rust/projects/project-1/README.md) (Error handling section)
-- [ ] Project 1: File I/O KV Store
+- [x] Project 1: File I/O KV Store
   - Full instructions: [talent-plan/courses/rust/projects/project-1/README.md](./talent-plan/courses/rust/projects/project-1/README.md)
 - [ ] Project 2: Memory Management
   - Full instructions: [talent-plan/courses/rust/projects/project-2/README.md](./talent-plan/courses/rust/projects/project-2/README.md)

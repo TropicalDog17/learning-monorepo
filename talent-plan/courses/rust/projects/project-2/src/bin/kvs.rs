@@ -1,70 +1,66 @@
-use clap::{App, AppSettings, Arg, SubCommand};
-use kvs::{KvStore, KvsError, Result};
-use std::env::current_dir;
-use std::process::exit;
+use std::path::Path;
 
-fn main() -> Result<()> {
-    let matches = App::new(env!("CARGO_PKG_NAME"))
-        .version(env!("CARGO_PKG_VERSION"))
-        .author(env!("CARGO_PKG_AUTHORS"))
-        .about(env!("CARGO_PKG_DESCRIPTION"))
-        .setting(AppSettings::DisableHelpSubcommand)
-        .setting(AppSettings::SubcommandRequiredElseHelp)
-        .setting(AppSettings::VersionlessSubcommands)
-        .subcommand(
-            SubCommand::with_name("set")
-                .about("Set the value of a string key to a string")
-                .arg(Arg::with_name("KEY").help("A string key").required(true))
-                .arg(
-                    Arg::with_name("VALUE")
-                        .help("The string value of the key")
-                        .required(true),
-                ),
-        )
-        .subcommand(
-            SubCommand::with_name("get")
-                .about("Get the string value of a given string key")
-                .arg(Arg::with_name("KEY").help("A string key").required(true)),
-        )
-        .subcommand(
-            SubCommand::with_name("rm")
-                .about("Remove a given key")
-                .arg(Arg::with_name("KEY").help("A string key").required(true)),
-        )
-        .get_matches();
+use clap::Parser;
+use clap::{Args, Subcommand, ValueEnum};
+use kvs::{KvStore, Result};
 
-    match matches.subcommand() {
-        ("set", Some(matches)) => {
-            let key = matches.value_of("KEY").unwrap();
-            let value = matches.value_of("VALUE").unwrap();
+#[derive(Parser, Debug)]
+#[command(version = env!("CARGO_PKG_VERSION"))]
+struct Cli {
+    #[command(subcommand)]
+    commands: Commands,
+}
 
-            let mut store = KvStore::open(current_dir()?)?;
-            store.set(key.to_string(), value.to_string())?;
+#[derive(Debug, Subcommand)]
+enum Commands {
+    // Set value to a key
+    Set {
+        #[arg(value_name = "KEY")]
+        key: String,
+        #[arg(value_name = "VALUE")]
+        value: String,
+    },
+    // Get value by key
+    Get {
+        #[arg(value_name = "KEY")]
+        key: String,
+    },
+    // Remove value by key
+    #[command(name = "rm")]
+    Remove {
+        #[arg(value_name = "KEY")]
+        key: String,
+    },
+}
+use std::process;
+
+fn main() {
+    if let Err(e) = run() {
+        println!("{}", e);
+        process::exit(1);
+    }
+}
+
+fn run() -> Result<()> {
+    let args = Cli::parse();
+    let mut kv = KvStore::open(Path::new("."))?;
+
+    match args.commands {
+        Commands::Set { key, value } => {
+            kv.set(key, value)?;
         }
-        ("get", Some(matches)) => {
-            let key = matches.value_of("KEY").unwrap();
-
-            let mut store = KvStore::open(current_dir()?)?;
-            if let Some(value) = store.get(key.to_string())? {
-                println!("{}", value);
-            } else {
-                println!("Key not found");
+        Commands::Get { key } => match kv.get(key) {
+            Ok(Some(value)) => println!("{}", value),
+            Err(err) => println!("{}", err),
+            Ok(None) => println!("Key not found"),
+        },
+        Commands::Remove { key } => match kv.remove(key) {
+            Ok(_) => {}
+            Err(err) => {
+                println!("{}", err);
+                process::exit(1);
             }
-        }
-        ("rm", Some(matches)) => {
-            let key = matches.value_of("KEY").unwrap();
-
-            let mut store = KvStore::open(current_dir()?)?;
-            match store.remove(key.to_string()) {
-                Ok(()) => {}
-                Err(KvsError::KeyNotFound) => {
-                    println!("Key not found");
-                    exit(1);
-                }
-                Err(e) => return Err(e),
-            }
-        }
-        _ => unreachable!(),
+        },
     }
     Ok(())
 }
